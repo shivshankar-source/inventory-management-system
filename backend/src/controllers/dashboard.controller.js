@@ -3,12 +3,17 @@ import Product from "../models/product.model.js";
 export const getDashboardStats = async (req, res) => {
   try {
     const totalProducts =
-      await Product.countDocuments();
+      await Product.countDocuments({
+        user: req.user.id,
+      });
 
     const categories =
-      await Product.distinct("category");
-
-    console.log("Categories:", categories);
+      await Product.distinct(
+        "category",
+        {
+          user: req.user.id,
+        }
+      );
 
     const totalCategories =
       categories.length;
@@ -18,13 +23,11 @@ export const getDashboardStats = async (req, res) => {
 
     const productsAddedToday =
       await Product.countDocuments({
-        createdAt: { $gte: today },
+        user: req.user.id,
+        createdAt: {
+          $gte: today,
+        },
       });
-
-    console.log(
-      "Products Added Today:",
-      productsAddedToday
-    );
 
     res.json({
       totalProducts,

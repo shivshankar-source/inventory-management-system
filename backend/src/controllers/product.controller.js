@@ -3,7 +3,10 @@ import Product from "../models/product.model.js";
 // CREATE PRODUCT
 export const createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const product = await Product.create({
+      ...req.body,
+      user: req.user.id,
+    });
 
     res.status(201).json({
       success: true,
@@ -28,7 +31,9 @@ export const getProducts = async (req, res) => {
       page = 1,
     } = req.query;
 
-    const query = {};
+    const query = {
+      user: req.user.id,
+    };
 
     if (search) {
       query.productName = {
@@ -81,9 +86,10 @@ export const getProductById = async (
   res
 ) => {
   try {
-    const product = await Product.findById(
-      req.params.id
-    );
+    const product = await Product.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!product) {
       return res.status(404).json({
@@ -111,8 +117,11 @@ export const updateProduct = async (
 ) => {
   try {
     const product =
-      await Product.findByIdAndUpdate(
-        req.params.id,
+      await Product.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          user: req.user.id,
+        },
         req.body,
         {
           new: true,
@@ -146,9 +155,10 @@ export const deleteProduct = async (
   res
 ) => {
   try {
-    const product = await Product.findById(
-      req.params.id
-    );
+    const product = await Product.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!product) {
       return res.status(404).json({
