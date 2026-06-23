@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../services/api";
-
+import {
+  LayoutDashboard,
+  Package,
+  LogOut,
+  Boxes,
+  User,
+} from "lucide-react";
 function Login() {
   const navigate = useNavigate();
 
@@ -31,6 +37,10 @@ function Login() {
         "token",
         res.data.token
       );
+      localStorage.setItem(
+  "user",
+  JSON.stringify(res.data.user)
+);
 
       toast.success("Login Successful");
 
@@ -44,47 +54,79 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-100 flex justify-center items-center">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex justify-center items-center p-4">
+
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-xl w-96"
+        className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl rounded-3xl p-8 w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold mb-4">
-          Login
-        </h1>
+        <div className="text-center mb-8">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <Boxes
+              className="text-white"
+              size={30}
+            />
+          </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="border w-full p-2 mb-3 rounded"
-          required
-        />
+          <h1 className="text-3xl font-bold text-white">
+            Welcome Back
+          </h1>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="border w-full p-2 mb-3 rounded"
-          required
-        />
+          <p className="text-gray-300 mt-2">
+            Login to Inventory System
+          </p>
+        </div>
+
+        <div className="relative mb-4">
+          <Mail
+            className="absolute left-3 top-3.5 text-gray-400"
+            size={18}
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full pl-10 p-3 rounded-xl bg-white text-gray-700 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+            required
+          />
+        </div>
+
+        <div className="relative mb-5">
+          <Lock
+            className="absolute left-3 top-3.5 text-gray-400"
+            size={18}
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full pl-10 p-3 rounded-xl bg-white text-gray-700 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+            required
+          />
+        </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition duration-300"
         >
           Login
         </button>
 
+        <p className="text-center text-gray-300 mt-5">
+          Don't have an account?
+        </p>
+
         <Link
           to="/register"
-          className="block text-center mt-3 text-blue-500"
+          className="block text-center text-blue-300 font-semibold mt-2 hover:text-white transition"
         >
-          Register
+          Create Account
         </Link>
       </form>
     </div>
