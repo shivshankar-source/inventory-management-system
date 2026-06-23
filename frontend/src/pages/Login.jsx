@@ -8,6 +8,8 @@ import {
   LogOut,
   Boxes,
   User,
+    Mail,
+  Lock
 } from "lucide-react";
 function Login() {
   const navigate = useNavigate();
